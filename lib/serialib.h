@@ -114,7 +114,8 @@ public:
     char openDevice(const char *Device, const unsigned int Bauds,
                     SerialDataBits Databits = SERIAL_DATABITS_8,
                     SerialParity Parity = SERIAL_PARITY_NONE,
-                    SerialStopBits Stopbits = SERIAL_STOPBITS_1);
+                    SerialStopBits Stopbits = SERIAL_STOPBITS_1,
+                    bool blocking = true);
 
     // Check device opening state
     bool isDeviceOpen();

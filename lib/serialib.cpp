@@ -144,7 +144,8 @@ serialib::~serialib()
 char serialib::openDevice(const char *Device, const unsigned int Bauds,
                           SerialDataBits Databits,
                           SerialParity Parity,
-                          SerialStopBits Stopbits) {
+                          SerialStopBits Stopbits, 
+                          bool blocking) {
 #if defined (_WIN32) || defined( _WIN64)
     // Open serial port
     hSerial = CreateFileA(Device,GENERIC_READ | GENERIC_WRITE,0,0,OPEN_EXISTING,/*FILE_ATTRIBUTE_NORMAL*/0,0);
@@ -224,7 +225,13 @@ char serialib::openDevice(const char *Device, const unsigned int Bauds,
     // Set TimeOut
 
     // Set the Timeout parameters
-    timeouts.ReadIntervalTimeout=0;
+    if (blocking){ 
+        // Blocking on timeout
+        timeouts.ReadIntervalTimeout = 0; 
+    } else { 
+        // Non blocking mode 
+        timeouts.ReadIntervalTimeout = MAXDWORD; 
+    } 
     // No TimeOut
     timeouts.ReadTotalTimeoutConstant=MAXDWORD;
     timeouts.ReadTotalTimeoutMultiplier=0;
